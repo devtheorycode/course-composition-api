@@ -1,6 +1,9 @@
-<script>
-export default {
-  props: {
+<script setup>
+  import { useOptions } from '../composables/options.js';
+
+  const { showSecondsInDurations } = useOptions()
+
+  defineProps({
     readonly: {
       type: Boolean,
       default: false
@@ -13,8 +16,7 @@ export default {
         seconds: null,
       }
     }
-  }
-}
+  })
 </script>
 
 <template>
@@ -24,8 +26,8 @@ export default {
       <span class="timeLabel">h </span>
       <input ref="minutes" type="number" v-model="duration.minutes" @keypress.enter="$refs.seconds.focus()" :readonly="readonly" min="0" max="59" placeholder="0" class="timeInput">
       <span class="timeLabel">m </span>
-      <input ref="seconds" type="number" v-model="duration.seconds" :readonly="readonly" min="0" max="59" placeholder="0" class="timeInput">
-      <span class="timeLabel">s </span>
+      <input v-show="showSecondsInDurations" ref="seconds" type="number" v-model="duration.seconds" :readonly="readonly" min="0" max="59" placeholder="0" class="timeInput">
+      <span v-show="showSecondsInDurations" class="timeLabel">s </span>
     </div>
   </div>
 </template>
